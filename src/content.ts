@@ -7,9 +7,9 @@ export const config = {
   // TODO: replace with her real Calendly link (Calendly → Share → copy link).
   calendlyUrl: 'https://calendly.com/your-calendly-link',
   // TODO: her WhatsApp number in international format, digits only (no +, no spaces).
-  whatsappNumber: '447000000000',
+  whatsappNumber: '447464604194',
   // TODO: her Viber number in international format, with the +.
-  viberNumber: '+447000000000',
+  viberNumber: '+447464604194',
   // TODO: replace with a real photo of her (put it in /public/img and update the path).
   photo: '/img/mum-placeholder.jpg',
 
@@ -19,7 +19,6 @@ export const config = {
   schedule: {
     weekday: { from: 8, to: 16 }, // Monday–Friday
     weekend: { from: 8, to: 13 }, // Saturday–Sunday
-    weekdayBusy: { from: 16, to: 18 }, // shown as "busy" on the planner
   },
 } as const
 
@@ -112,14 +111,10 @@ const en = {
     weekdays: 'Mon – Fri',
     weekend: 'Sat – Sun',
     free: 'Free for lessons',
-    busy: 'Busy',
+    allYourTime: 'All times are shown in your time zone.',
     now: 'now',
-    lessonsFrom: 'Lessons',
-    inYourTime: 'your time',
-    herTime: 'my time in London',
     nextDay: '+1 day',
     prevDay: '−1 day',
-    footnote: 'Summer and winter time are handled automatically.',
     cta: 'Pick a time on my calendar',
     greatFit: 'A comfortable time for school children',
     earlyFit: 'Early or late for you, but weekends may work',
@@ -303,14 +298,10 @@ const bg: Messages = {
     weekdays: 'Пон – Пет',
     weekend: 'Съб – Нед',
     free: 'Свободна за уроци',
-    busy: 'Заета',
+    allYourTime: 'Всички часове са по вашето време.',
     now: 'сега',
-    lessonsFrom: 'Уроци',
-    inYourTime: 'по вашето време',
-    herTime: 'моето време в Лондон',
     nextDay: '+1 ден',
     prevDay: '−1 ден',
-    footnote: 'Лятното и зимното часово време се отчитат автоматично.',
     cta: 'Изберете час в календара ми',
     greatFit: 'Удобно време за ученици',
     earlyFit: 'Рано или късно за вас, но уикендите може да са удобни',

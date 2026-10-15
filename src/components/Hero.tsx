@@ -271,7 +271,7 @@ export function Hero() {
               <img
                 src={config.photo}
                 alt={t.hero.photoAlt}
-                className="aspect-[4/5] w-full rounded-sm object-cover"
+                className="aspect-[4/5] w-full rounded-sm object-cover object-top"
                 width={720}
                 height={900}
                 fetchPriority="high"

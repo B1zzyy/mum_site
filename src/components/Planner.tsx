@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { CalendarHeart, MapPin, Moon, Sun, Sunrise } from 'lucide-react'
+import { CalendarHeart, Globe2, MapPin, Moon, Sun, Sunrise } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { cities, config, type City } from '../content'
 import { useLang } from '../lib/i18n'
@@ -8,7 +8,7 @@ import { FloatTitle, Reveal } from './motion'
 
 const pct = (h: number) => `${(h / 24) * 100}%`
 
-function Track({ free, busy, now, label, icon: Icon }: { free: Converted; busy?: Converted; now: number; label: string; icon: typeof Sun }) {
+function Track({ free, now, label, icon: Icon }: { free: Converted; now: number; label: string; icon: typeof Sun }) {
   const reduce = useReducedMotion()
   const t = reduce ? { duration: 0 } : { type: 'spring' as const, stiffness: 160, damping: 22 }
   return (
@@ -24,15 +24,6 @@ function Track({ free, busy, now, label, icon: Icon }: { free: Converted; busy?:
         {/* hour ticks */}
         {Array.from({ length: 23 }, (_, i) => (
           <div key={i} className="absolute inset-y-0 w-px bg-background/80" style={{ left: pct(i + 1) }} />
-        ))}
-        {busy?.segments.map((s, i) => (
-          <motion.div
-            key={`busy${i}`}
-            className="stripes absolute inset-y-0"
-            initial={false}
-            animate={{ left: pct(s.from), width: pct(s.to - s.from) }}
-            transition={t}
-          />
         ))}
         {free.segments.map((s, i) => (
           <motion.div
@@ -77,7 +68,6 @@ export function Planner() {
   const shift = hourShift(selected.tz, now)
   const weekday = convertWindow(config.schedule.weekday, shift)
   const weekend = convertWindow(config.schedule.weekend, shift)
-  const busy = convertWindow(config.schedule.weekdayBusy, shift)
   const localNow = hourNow(selected.tz, now)
   const clock = new Intl.DateTimeFormat(lang === 'bg' ? 'bg-BG' : 'en-GB', {
     timeZone: selected.tz,
@@ -92,8 +82,8 @@ export function Planner() {
   const dayNote = (c: Converted) => (c.dayShift === 1 ? t.planner.nextDay : c.dayShift === -1 ? t.planner.prevDay : '')
 
   const rows = [
-    { key: 'wd', label: t.planner.weekdays, conv: weekday, raw: config.schedule.weekday, busy, icon: Sun },
-    { key: 'we', label: t.planner.weekend, conv: weekend, raw: config.schedule.weekend, busy: undefined, icon: Sunrise },
+    { key: 'wd', label: t.planner.weekdays, conv: weekday, icon: Sun },
+    { key: 'we', label: t.planner.weekend, conv: weekend, icon: Sunrise },
   ]
 
   return (
@@ -167,9 +157,8 @@ export function Planner() {
             <div className="mt-8 space-y-7">
               {rows.map((r) => (
                 <div key={r.key}>
-                  <Track free={r.conv} busy={r.busy} now={localNow} label={r.label} icon={r.icon} />
+                  <Track free={r.conv} now={localNow} label={r.label} icon={r.icon} />
                   <p className="mt-3 flex flex-wrap items-baseline gap-x-2 text-foreground">
-                    <span className="font-bold">{t.planner.lessonsFrom}</span>
                     <motion.span
                       key={`${selected.id}${r.key}`}
                       className="font-serif text-2xl font-black tabular-nums text-primary"
@@ -178,25 +167,21 @@ export function Planner() {
                     >
                       {formatHour(r.conv.from)} – {formatHour(r.conv.to)}
                     </motion.span>
-                    <span className="font-semibold text-body">{t.planner.inYourTime}</span>
                     {dayNote(r.conv) && <span className="badge badge-ink">{dayNote(r.conv)}</span>}
-                  </p>
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    {formatHour(r.raw.from)} – {formatHour(r.raw.to)} {t.planner.herTime}
                   </p>
                 </div>
               ))}
             </div>
+            <p className="mt-6 flex items-center gap-2 text-sm font-bold text-body">
+              <Globe2 className="size-4 text-primary" aria-hidden />
+              {t.planner.allYourTime}
+            </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-border pt-6">
               <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold text-body">
                 <li className="flex items-center gap-2">
                   <span className="size-3.5 rounded bg-accent" aria-hidden />
                   {t.planner.free}
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="stripes size-3.5 rounded ring-1 ring-border" aria-hidden />
-                  {t.planner.busy}
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-3.5 w-0.5 bg-chart-4" aria-hidden />
@@ -208,7 +193,6 @@ export function Planner() {
                 {t.planner.cta}
               </a>
             </div>
-            <p className="mt-4 text-xs font-semibold text-muted-foreground">{t.planner.footnote}</p>
           </div>
         </Reveal>
       </div>
