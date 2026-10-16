@@ -85,7 +85,7 @@ function MagnetLetter({
 function CircleBadge({ text }: { text: string }) {
   const reduce = useReducedMotion()
   // Short labels go round twice; long ones (e.g. Bulgarian) once.
-  const label = text.length > 16 ? `${text} · ` : `${text} · ${text} · `
+  const label = text.length > 20 ? `${text} · ` : `${text} · ${text} · `
   return (
     <div className="absolute -right-5 -top-8 z-30 size-28 sm:-right-8 sm:size-32">
       <motion.svg
